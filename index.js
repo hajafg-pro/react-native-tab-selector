@@ -24,7 +24,21 @@ export default class TabSelectorAnimation extends PureComponent {
     translateX: new Animated.Value(0),
     translateXTabOne: new Animated.Value(0),
     translateXTabTwo: new Animated.Value(width),
-    translateY: -1000
+    translateY: -1000,
+    defaultTabSet: false
+  }
+
+  prepareDefaultIndex = () => {
+    const { defaultIndex } = this.props
+    const { translateX } = this.state
+
+    if (defaultIndex === undefined) {
+      return
+    }
+
+    const type = `xTab${defaultIndex}`
+    this.setState({ active: defaultIndex, defaultTabSet: true })
+    translateX.setValue(this.state[type] || 0)
   }
 
   handleSlide = (type, index) => {
@@ -32,6 +46,7 @@ export default class TabSelectorAnimation extends PureComponent {
     const { active, translateX, translateXTabOne, translateXTabTwo } =
       this.state
     if (onChangeTab) onChangeTab(index)
+
     Animated.timing(translateX, {
       toValue: this.state[type] || 0,
       delay: 0,
@@ -67,6 +82,33 @@ export default class TabSelectorAnimation extends PureComponent {
     }
   }
 
+  handlePress(index) {
+    this.setState({ active: index }, () => {
+      this.handleSlide(`xTab${index}`, index)
+    })
+  }
+
+  getReadyTabCount() {
+    const { tabs } = this.props
+
+    let readyTabsCount = 0
+    for (let i = 0; i < tabs.length; i++) {
+      if (this.state[`xTab${i}`] !== undefined) {
+        readyTabsCount++
+      }
+    }
+    return readyTabsCount
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { tabs } = this.props
+    const { defaultTabSet } = this.state
+
+    if (this.getReadyTabCount() == tabs.length && !defaultTabSet) {
+      this.prepareDefaultIndex()
+    }
+  }
+
   render() {
     const {
       tabs = [],
@@ -76,6 +118,7 @@ export default class TabSelectorAnimation extends PureComponent {
       styleTab
     } = this.props
     const { translateX } = this.state
+
     return (
       <View
         style={[
@@ -103,15 +146,15 @@ export default class TabSelectorAnimation extends PureComponent {
           <TouchableOpacity
             key={item.title}
             style={[styles.tab, styleTab]}
-            onLayout={(event) =>
+            onLayout={(event) => {
               this.setState({
                 [`xTab${index}`]: event.nativeEvent.layout.x
               })
-            }
+            }}
             onPress={() =>
-              this.setState({ active: index }, () =>
+              this.setState({ active: index }, () => {
                 this.handleSlide(`xTab${index}`, index)
-              )
+              })
             }
           >
             <Text style={[styles.textTitle, styleTitle]}>{item.title}</Text>
