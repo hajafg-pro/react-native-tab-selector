@@ -18,6 +18,7 @@ yarn add react-native-tab-selector
 - **backgroundColor**: Background color of component.
 - **styleTab**: custom style of each tab.
 - **styleTitle**: custom style of text title tab.
+- **defaultIndex**: the index of the initially selected tab.
 
 ## Usage
 
@@ -29,7 +30,7 @@ import TabSelectorAnimation from 'react-native-tab-selector'
 const DATA = [{ title: 'Tab1' }, { title: 'Tab2' }, { title: 'Tab3' }]
 
 const Example = () => {
-  const [indexTab, setIndexTab] = useState(0)
+  const [indexTab, setIndexTab] = useState(1)
 
   return (
     <View style={styles.wrapperAll}>
@@ -37,6 +38,7 @@ const Example = () => {
         onChangeTab={setIndexTab}
         style={styles.tabSelector}
         tabs={DATA}
+        defaultIndex={indexTab}
       />
       <Text style={styles.text}>{`Current tab is ${indexTab + 1}`}</Text>
     </View>
