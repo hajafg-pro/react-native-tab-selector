@@ -82,12 +82,6 @@ export default class TabSelectorAnimation extends PureComponent {
     }
   }
 
-  handlePress(index) {
-    this.setState({ active: index }, () => {
-      this.handleSlide(`xTab${index}`, index)
-    })
-  }
-
   getReadyTabCount() {
     const { tabs } = this.props
 
