@@ -24,7 +24,7 @@
     "node": ">=10"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
+    "react": ">=16.0.0",
     "react-native": "*"
   },
   "devDependencies": {
