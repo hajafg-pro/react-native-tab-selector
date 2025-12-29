@@ -5,7 +5,7 @@ import TabSelectorAnimation from 'react-native-tab-selector'
 const DATA = [{ title: 'Tab1' }, { title: 'Tab2' }, { title: 'Tab3' }]
 
 const Example = () => {
-  const [indexTab, setIndexTab] = useState(0)
+  const [indexTab, setIndexTab] = useState(1)
 
   return (
     <View style={styles.wrapperAll}>
@@ -13,6 +13,7 @@ const Example = () => {
         onChangeTab={setIndexTab}
         style={styles.tabSelector}
         tabs={DATA}
+        defaultIndex={indexTab}
       />
       <Text style={styles.text}>{`Current tab is ${indexTab + 1}`}</Text>
     </View>
